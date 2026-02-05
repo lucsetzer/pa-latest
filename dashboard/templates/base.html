@@ -1,0 +1,44 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Prompt Alchemy{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Your beautiful CSS - copy from dashboard */
+        :root {
+            --primary: #0cc0df;
+            --dark-bg: #0a0a0f;
+            --card-bg: #151521;
+            --text: #e2e8f0;
+        }
+        /* ... all your existing styles ... */
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% block navbar %}
+    <nav class="main-nav">
+        <!-- Your navbar HTML -->
+    </nav>
+    {% endblock %}
+    
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+    
+    {% block scripts %}
+    <!-- Keep UI-only JavaScript -->
+    <script>
+        // Animations, button effects, etc. - KEEP THESE
+        document.querySelectorAll('.app-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px)';
+            });
+        });
+    </script>
+    {% endblock %}
+</body>
+</html>
