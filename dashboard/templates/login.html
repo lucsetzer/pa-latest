@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - Prompts Alchemy</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+</head>
+<body>
+    <main class="container" style="max-width: 500px; margin-top: 4rem;">
+        <h1 style="text-align: center;">Prompts Alchemy</h1>
+        <p style="text-align: center; color: #666;">First-prompt perfect AI results</p>
+        
+        <article style="margin-top: 2rem;">
+            <h3>Enter your email</h3>
+            <form action="/login" method="post">
+                <label>Email Address</label>
+                <input type="email" name="email" placeholder="you@example.com" required>
+                <button type="submit">Send Magic Link</button>
+            </form>
+            
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+                We'll email you a login link. No password needed.
+            </p>
+        </article>
+        
+        <footer style="text-align: center; margin-top: 3rem; color: #999;">
+            <p>Token balance will appear after login</p>
+        </footer>
+    </main>
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            console.log('Form submitting!');
+            console.log('Email value:', document.querySelector('input[name="email"]').value);
+        });
+</script>
+</body>
+</html>
