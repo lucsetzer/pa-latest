@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prompts Alchemy - First-Prompt Perfect</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <style>
+        .tier-card { border-radius: 10px; padding: 1.5rem; margin: 1rem 0; }
+        .tier-free { background: #f8f9fa; border: 2px solid #dee2e6; }
+        .tier-student { background: #e3f2fd; border: 2px solid #2196f3; }
+        .tier-creator { background: #e8f5e9; border: 2px solid #4caf50; }
+        .tier-agency { background: #f3e5f5; border: 2px solid #9c27b0; }
+        .token-count { font-size: 2.5rem; font-weight: bold; color: #333; }
+        .per-item { color: #666; font-size: 0.9rem; }
+        .highlight { background: #fff3cd; padding: 0.2rem 0.5rem; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <!-- Hero -->
+        <header style="text-align: center; padding: 3rem 1rem;">
+            <h1>🎯 First-Prompt Perfect AI Results</h1>
+            <p class="subtitle">For busy creators, marketers & YouTubers who don't have time for AI guesswork</p>
+            <p><span class="highlight">No learning curve → Just results</span></p>
+        </header>
+
+        <!-- Value Proposition -->
+        <section style="margin: 2rem 0;">
+            <div class="grid">
+                <div>
+                    <h3>🧠 Thumbnail Wizard</h3>
+                    <p><strong>4 tokens</strong> = Professional critique for any platform</p>
+                </div>
+                <div>
+                    <h3>✍️ Script Wizard</h3>
+                    <p><strong>3 tokens</strong> = Ready-to-shoot video scripts</p>
+                </div>
+                <div>
+                    <h3>🎣 Hook Wizard</h3>
+                    <p><strong>4 tokens</strong> = 3 viral hook ideas in seconds</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Tiers -->
+        <h2 style="text-align: center; margin: 3rem 0 1rem 0;">Get More Done, Not More Confused</h2>
+        
+        {% for tier_name, tier in tiers.items() %}
+        <article class="tier-card tier-{{ tier_name }}">
+            <div class="grid">
+                <div>
+                    <h3>{{ tier_name.title() }} Tier</h3>
+                    <p><em>{{ tier.best_for }}</em></p>
+                </div>
+                <div style="text-align: right;">
+                    <div class="token-count">{{ tier.monthly_tokens }}</div>
+                    <p>tokens/month</p>
+                </div>
+            </div>
+            
+            <div class="grid" style="margin-top: 1rem;">
+                <div>
+                    <p>✅ {{ tier.thumbnail_analyses }} thumbnail analyses</p>
+                    <p>✅ {{ tier.scripts }} video scripts</p>
+                </div>
+                <div>
+                    <p>✅ {{ tier.prompt_optimizations }} prompt optimizations</p>
+                    <p>✅ {{ tier.hooks }} hook batches (3 ideas each)</p>
+                </div>
+            </div>
+            
+            <footer style="margin-top: 1.5rem; text-align: center;">
+                {% if tier.monthly_price == 0 %}
+                <button class="secondary">Start Free</button>
+                {% else %}
+                <button>${{ tier.monthly_price }}/month</button>
+                <p class="per-item">≈ ${{ "%.2f"|format(tier.monthly_price / (tier.monthly_tokens // 4)) }} per thumbnail critique</p>
+                {% endif %}
+            </footer>
+        </article>
+        {% endfor %}
+
+        <!-- Final CTA -->
+        <footer style="text-align: center; margin: 3rem 0; padding: 2rem; background: #f8f9fa; border-radius: 10px;">
+            <h3>Stop wasting time on AI learning curves</h3>
+            <p>Get professional AI results from your very first prompt</p>
+            <button class="contrast">Start with 15 Free Tokens</button>
+        </footer>
+    </main>
+</body>
+</html>
