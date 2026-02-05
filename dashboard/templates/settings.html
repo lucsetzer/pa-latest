@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Prompts Alchemy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.dark.min.css">
+    <style>
+:root {
+    --primary: #0cc0df;
+    --dark-bg: #1a1a2e;  /* Lighter dark */
+    --card-bg: #2d2d44;  /* Lighter cards */
+    --text: #f8f9fa;     /* Brighter text */
+}
+
+body { 
+    background: var(--dark-bg); 
+    color: var(--text);
+    font-size: 16px; /* Normal font size */
+    line-height: 1.5;
+}
+
+/* Reduce Pico.css giant text */
+h1 { font-size: 2rem !important; }
+h2 { font-size: 1.5rem !important; }
+h3 { font-size: 1.25rem !important; }
+p { font-size: 1rem !important; }
+
+.card { 
+    background: var(--card-bg); 
+    border-radius: 12px; 
+    padding: 1.5rem; /* Reduced padding */
+    margin-bottom: 1.5rem;
+}
+
+/* Keep only necessary overrides */
+header, nav {
+    border-bottom: 1px solid #4a5568 !important;
+}
+</style>
+</head>
+<body>
+    <nav style="padding: 1rem 2rem; border-bottom: 1px solid #2d3748;">
+        <ul>
+            <li><strong><i class="fas fa-hat-wizard" style="color: #0cc0df;"></i> Prompts Alchemy</strong></li>
+        </ul>
+        <ul>
+            <li><a href="/frontpage" aria-label="Home" title="Home">
+                <i class="fas fa-hat-wizard" style="color: #0cc0df;"></i> Home
+            </a></li>
+            <li><a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="/settings" class="secondary"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </nav>
+
+    <main class="container" style="max-width: 1200px; margin: 2rem auto; padding: 0 1rem;">
+        <h1><i class="fas fa-cog"></i> Account Settings</h1>
+        <p>Welcome, <strong>{{ user_email }}</strong></p>
+
+        <!-- Profile Settings (Read-only for now) -->
+<div class="card">
+    <h2><i class="fas fa-user"></i> Profile Settings</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
+        <div>
+            <h3>Account Information</h3>
+            <div style="margin-top: 1rem;">
+                <p><strong>Email:</strong> {{ user_email }}</p>
+                <p><strong>Member since:</strong> January 2024</p>
+                <p><strong>Account ID:</strong> {{ user_email|replace('@', '_at_')|replace('.', '_') }}</p>
+            </div>
+        </div>
+        
+        <div>
+            <h3>Preferences</h3>
+            <div style="margin-top: 1rem;">
+                <p><strong>Default timezone:</strong> Auto-detected</p>
+                <p><strong>Email notifications:</strong> On</p>
+                <p><strong>Token low balance alerts:</strong> On (below 50 tokens)</p>
+            </div>
+            <button class="outline" style="margin-top: 1rem;" onclick="alert('Edit functionality coming soon!')">
+                <i class="fas fa-edit"></i> Edit Preferences
+            </button>
+        </div>
+    </div>
+</div>
+
+        <!-- Current Plan Card -->
+        <div class="card plan-card">
+            <h2><i class="fas fa-crown"></i> Your Current Plan</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
+                <div>
+                    <h3>{{ current_plan }}</h3>
+                    <p><i class="fas fa-coins"></i> <strong>{{ tokens_per_month }} tokens/month</strong></p>
+                    <p><i class="fas fa-calendar"></i> Renews: {{ renewal_date }}</p>
+                    <p><i class="fas fa-wallet"></i> Token Balance: <strong>{{ balance }} tokens</strong></p>
+                </div>
+                <div style="text-align: right;">
+                    <button class="btn-primary" onclick="showUpgradeModal()">
+                        <i class="fas fa-arrow-up"></i> Upgrade Plan
+                    </button>
+                </div>
+            </div>
+        </div>
+
+ <!-- DEBUG: current_plan = {{ current_plan }} -->
+<p>Debug: Current plan is "{{ current_plan }}"</p>
+
+<!-- Available Plans - Simple Working Version -->
+<div class="card">
+    <h2><i class="fas fa-layer-group"></i> Upgrade Your Plan</h2>
+    <p style="color: #94a3b8; margin-bottom: 1.5rem;">Choose a plan with more tokens for your AI wizardry.</p>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+        <!-- Student Plan -->
+        <div style="border: 1px solid #4a5568; padding: 1.5rem; border-radius: 8px;" id="student-card">
+            <h3>Student <small style="color: #94a3b8;">(.edu required)</small></h3>
+            <p style="font-size: 2rem; color: var(--primary); font-weight: bold;">$9.99<span style="font-size: 1rem; color: #94a3b8;">/month</span></p>
+            <p><i class="fas fa-check"></i> 75 tokens/month</p>
+            <p><i class="fas fa-check"></i> All 5 AI Wizards</p>
+            <p><i class="fas fa-check"></i> Accessibility Checker</p>
+            <p><i class="fas fa-check"></i> Commercial use allowed</p>
+            <button class="btn-primary" onclick="paddleCheckout('student')">Upgrade</button>
+        </div>
+        
+        <!-- Creator Plan -->
+        <div style="border: 2px solid var(--primary); padding: 1.5rem; border-radius: 8px; background: #1a2036;" id="creator-card">
+            <h3><i class="fas fa-star"></i> Creator</h3>
+            <p style="font-size: 2rem; color: var(--primary); font-weight: bold;">$19.99<span style="font-size: 1rem; color: #94a3b8;">/month</span></p>
+            <p><i class="fas fa-check"></i> 200 tokens/month</p>
+            <p><i class="fas fa-check"></i> All 5 AI Wizards</p>
+            <p><i class="fas fa-check"></i> Accessibility Checker</p>
+            <p><i class="fas fa-check"></i> Commercial use allowed</p>
+            <button class="btn-primary" onclick="paddleCheckout('creator')">Upgrade</button>
+        </div>
+        
+        <!-- Agency Plan -->
+        <div style="border: 1px solid #4a5568; padding: 1.5rem; border-radius: 8px;" id="agency-card">
+            <h3>Agency</h3>
+            <p style="font-size: 2rem; color: var(--primary); font-weight: bold;">$49.99<span style="font-size: 1rem; color: #94a3b8;">/month</span></p>
+            <p><i class="fas fa-check"></i> 1000 tokens/month</p>
+            <p><i class="fas fa-check"></i> All 5 AI Wizards</p>
+            <p><i class="fas fa-check"></i> Accessibility Checker</p>
+            <p><i class="fas fa-check"></i> Commercial use allowed</p>
+            <p><i class="fas fa-check"></i> Best for high volume</p>
+            <button class="btn-primary" onclick="paddleCheckout('agency')">Upgrade</button>
+        </div>
+    </div>
+    
+    <!-- What you get section -->
+    <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(12, 192, 223, 0.1); border-radius: 8px; border: 1px solid rgba(12, 192, 223, 0.3);">
+        <h4><i class="fas fa-info-circle"></i> What you get with any paid plan:</h4>
+        <p style="margin: 0.5rem 0;"><i class="fas fa-check" style="color: #0cc0df;"></i> <strong>Commercial rights</strong> - Use outputs for client work</p>
+        <p style="margin: 0.5rem 0;"><i class="fas fa-check" style="color: #0cc0df;"></i> <strong>Email support</strong> - I personally respond to every email</p>
+        <p style="margin: 0.5rem 0;"><i class="fas fa-check" style="color: #0cc0df;"></i> <strong>Token rollover</strong> - Unused tokens carry over monthly</p>
+    </div>
+</div>
+
+<script>
+// Hide current plan card
+document.addEventListener('DOMContentLoaded', function() {
+    const currentPlan = "{{ current_plan }}";
+    
+    if (currentPlan === "Student") {
+        document.getElementById('student-card').style.display = 'none';
+    } else if (currentPlan === "Creator") {
+        document.getElementById('creator-card').style.display = 'none';
+    } else if (currentPlan === "Agency") {
+        document.getElementById('agency-card').style.display = 'none';
+        // Show "highest plan" message
+        const container = document.querySelector('.card');
+        const message = document.createElement('div');
+        message.innerHTML = `
+            <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(12, 192, 223, 0.1); border-radius: 8px; text-align: center;">
+                <h4><i class="fas fa-trophy"></i> You're on our highest plan!</h4>
+                <p>Thank you for being an awesome customer. You have full access to everything.</p>
+            </div>
+        `;
+        container.insertBefore(message, container.querySelector('div:last-child'));
+    }
+    // Free Tier users see all cards (no hiding)
+});
+</script>
+
+        <!-- Billing History (Mock for now) -->
+        <div class="card">
+            <h2><i class="fas fa-receipt"></i> Billing History</h2>
+            <table style="width: 100%; margin-top: 1rem;">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2024-01-15</td>
+                        <td>Free Tier Activation</td>
+                        <td>$0.00</td>
+                        <td><span style="color: #48bb78;">Active</span></td>
+                    </tr>
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    
+    <script>
+    function paddleCheckout(plan) {
+        // TODO: Connect to Paddle.js
+        alert(`Redirecting to ${plan} plan checkout...`);
+        // Paddle.Checkout.open({ product: plan_id });
+    }
+    
+    function showUpgradeModal() {
+        document.querySelector('html').scrollTop = 0;
+    }
+    </script>
+    <script src="https://cdn.paddle.com/paddle/paddle.js"></script>
+<script>
+    Paddle.Environment.set('sandbox'); // Use 'production' when live
+    Paddle.Initialize({ 
+        vendor: YOUR_PADDLE_VENDOR_ID,
+        eventCallback: function(event) {
+            if (event.name === 'checkout.completed') {
+                // Redirect to success page or refresh
+                window.location.href = '/payment-success?checkout_id=' + event.data.checkout.id;
+            }
+        }
+    });
+    
+    function paddleCheckout(priceId) {
+        Paddle.Checkout.open({
+            items: [{ priceId: priceId, quantity: 1 }],
+            customer: { email: '{{ user_email }}' },
+            customData: { user_email: '{{ user_email }}' }
+        });
+    }
+</script>
+</body>
+</html>
