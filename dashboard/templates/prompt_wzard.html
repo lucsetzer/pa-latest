@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Wizard - Prompts Alchemy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0cc0df;
+            --dark-bg: #0a0a0f;
+            --card-bg: #151521;
+        }
+        body { background: var(--dark-bg); color: #e2e8f0; font-family: sans-serif; padding: 2rem; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: var(--card-bg); padding: 2rem; border-radius: 12px; border: 1px solid #2d3748; margin-bottom: 2rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; color: #94a3b8; }
+        input, select, textarea { width: 100%; padding: 0.75rem; background: #1e293b; border: 1px solid #4a5568; border-radius: 6px; color: white; }
+        .btn { background: var(--primary); color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; }
+        .cost-badge { background: rgba(12, 192, 223, 0.1); color: var(--primary); padding: 0.5rem 1rem; border-radius: 20px; display: inline-block; margin-left: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <div>
+                <h1><i class="fas fa-hat-wizard" style="color: #0cc0df;"></i> Prompt Wizard</h1>
+                <p style="color: #94a3b8;">Generate perfect AI prompts in seconds</p>
+            </div>
+            <div>
+                <a href="/dashboard" style="color: #94a3b8; text-decoration: none;">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+        </header>
+        
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="margin: 0;">Create Your Prompt</h2>
+                <span class="cost-badge">
+                    <i class="fas fa-coins"></i> 5 tokens
+                </span>
+            </div>
+            
+            <form action="/generate-prompt" method="post">
+                <div class="form-group">
+                    <label for="goal"><i class="fas fa-bullseye"></i> What's your goal?</label>
+                    <input type="text" id="goal" name="goal" placeholder="e.g., Write a viral Twitter thread about AI ethics" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="audience"><i class="fas fa-users"></i> Who is your audience?</label>
+                    <input type="text" id="audience" name="audience" placeholder="e.g., Tech entrepreneurs, students, general public" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="platform"><i class="fas fa-globe"></i> Platform/Format</label>
+                    <select id="platform" name="platform" required>
+                        <option value="">Select platform...</option>
+                        <option value="Twitter/X thread">Twitter/X thread</option>
+                        <option value="LinkedIn post">LinkedIn post</option>
+                        <option value="Blog article">Blog article</option>
+                        <option value="Video script">Video script</option>
+                        <option value="Email newsletter">Email newsletter</option>
+                        <option value="Presentation">Presentation</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="style"><i class="fas fa-paint-brush"></i> Writing Style</label>
+                    <select id="style" name="style" required>
+                        <option value="">Select style...</option>
+                        <option value="Professional">Professional</option>
+                        <option value="Conversational">Conversational</option>
+                        <option value="Persuasive">Persuasive</option>
+                        <option value="Educational">Educational</option>
+                        <option value="Storytelling">Storytelling</option>
+                        <option value="Humorous">Humorous</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tone"><i class="fas fa-volume-up"></i> Tone</label>
+                    <select id="tone" name="tone" required>
+                        <option value="">Select tone...</option>
+                        <option value="Friendly">Friendly</option>
+                        <option value="Authoritative">Authoritative</option>
+                        <option value="Inspirational">Inspirational</option>
+                        <option value="Urgent">Urgent</option>
+                        <option value="Calm">Calm</option>
+                        <option value="Excited">Excited</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn" style="width: 100%;">
+                    <i class="fas fa-magic"></i> Generate Prompt (5 tokens)
+                </button>
+            </form>
+            
+            <div style="margin-top: 2rem; padding: 1rem; background: rgba(12, 192, 223, 0.05); border-radius: 8px;">
+                <h4><i class="fas fa-lightbulb"></i> Tips for best results:</h4>
+                <ul style="color: #94a3b8; margin: 0.5rem 0 0 1rem;">
+                    <li>Be specific about your goal</li>
+                    <li>Describe your audience's interests</li>
+                    <li>Choose platform-appropriate formats</li>
+                    <li>Review and refine the generated prompt</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
