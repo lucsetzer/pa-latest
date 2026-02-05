@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Alchemy Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <style>
+        :root {
+            --primary: #0cc0df;
+            --dark-bg: #0a0a0f;
+            --card-bg: #151521;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--dark-bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #2d3748;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo h1 {
+            font-size: 1.875rem;
+            background: #0cc0df;
+            color: #0cc0df;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .token-balance {
+            background: var(--card-bg);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #2d3748;
+        }
+        
+        .token-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        /* Main Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        /* App Cards */
+        .app-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid #2d3748;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .app-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .app-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(12, 192, 223, 0.15);
+        }
+        
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .app-icon {
+            font-size: 2rem;
+        }
+        
+        .app-cost {
+            background: rgba(12, 192, 223, 0.1);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            border: 1px solid rgba(12, 192, 223, 0.3);
+        }
+        
+        .app-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .app-desc {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .app-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .app-button:hover {
+            background: #0aa9c7;
+            transform: scale(1.02);
+        }
+        
+        /* Recent Activity */
+        .activity-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid #2d3748;
+        }
+        
+        .activity-title {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+        }
+        
+        .activity-tokens {
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #2d3748;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+        
+        /* Logout */
+        .logout-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid #4a5568;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            color: #f56565;
+            border-color: #f56565;
+        }
+        /* Remove Pico.css interfering borders */
+nav, table, tr, td, th, hr, .card, [class*="border"] {
+    border: none !important;
+    border-color: transparent !important;
+}
+
+/* Keep ONLY your custom borders */
+.header {
+    border-bottom: 1px solid #2d3748 !important; /* Keep this one */
+}
+
+.app-card, .activity-section, .token-balance {
+    border: 1px solid #2d3748 !important; /* Keep your custom borders */
+}
+
+/* Nuclear option if line persists */
+* {
+    background-image: none !important; /* Some borders are actually background images */
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; border-bottom: 1px solid #2d3748;">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+        <i class="fas fa-hat-wizard" style="color: #0cc0df; font-size: 2rem;"></i>
+        <h1 style="color: #0cc0df; margin: 0;">Prompts Alchemy</h1>
+    </div>
+    
+    <div style="display: flex; gap: 1.5rem;">
+        <!-- Home Icon -->
+        <a href="/" aria-label="Home" title="Home">
+            <i class="fas fa-hat-wizard" style="color: #0cc0df; font-size: 1.5rem;"></i>
+        </a>
+        <!-- Dashboard Icon -->
+        <a href="/dashboard" aria-label="Dashboard" title="Dashboard">
+            <i class="fas fa-tachometer-alt" style="font-size: 1.5rem; color: #0cc0df;"></i>
+        </a>
+        
+        <!-- Settings Icon -->
+        <a href="/settings" aria-label="Settings" title="Settings">
+            <i class="fas fa-cog" style="font-size: 1.5rem; color: #94a3b8;"></i>
+        </a>
+        
+        <!-- Logout Icon -->
+        <a href="/logout" aria-label="Logout" title="Logout">
+            <i class="fas fa-sign-out-alt" style="font-size: 1.5rem; color: #ef4444;"></i>
+        </a>
+    </div>
+
+            
+            <div class="user-info">
+                <div class="token-balance">
+                    <div style="font-size: 0.875rem; color: var(--text-muted);">Available Tokens</div>
+                    <div class="token-amount">{{ balance }} tokens</div>
+                </div>
+                <div style="color: var(--text-muted);">{{ user_email }}</div>
+            </div>
+        </header>
+        
+       <main class="dashboard-grid">
+    {% for app in apps %}
+    <a href="{{ app.url }}" class="app-card-link">
+        <div class="app-header">
+            <i class="{{ app.icon }}"></i>
+            <span class="app-cost">{{ app.cost }} tokens</span>
+        </div>
+        <h3 class="app-title">{{ app.name }}</h3>
+        <p class="app-desc">{{ app.description }}</p>
+        <button class="app-button">Launch</button>
+    </a>
+    {% endfor %}
+</main>
+
+
+        
+        <!-- Recent Activity -->
+        <section class="activity-section">
+            <h2 class="activity-title">Recent Activity</h2>
+            <div class="activity-list" id="activityList">
+                <div class="activity-item">
+                    <span>Thumbnail analysis</span>
+                    <span class="activity-tokens">-4 tokens</span>
+                </div>
+                <div class="activity-item">
+                    <span>Deposit from Paddle</span>
+                    <span class="activity-tokens" style="color: #10b981;">+200 tokens</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Prompts Alchemy Token Economy • First-prompt perfect results</p>
+            <p style="margin-top: 0.5rem; font-size: 0.75rem;">Tokens roll over monthly • Cancel anytime</p>
+        </footer>
+    </div>
+    
+    
+</body>
+</html>
+{% endblock %}
